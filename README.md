@@ -7,19 +7,19 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
 # Prerequisites
 
--AWS EC2 instance (Amazon Linux 2023)
+ AWS EC2 instance (Amazon Linux 2023)
 
--MongoDB installed on EC2
+ MongoDB installed on EC2
 
--AWS S3 bucket for storing assets
+ AWS S3 bucket for storing assets
 
--Node.js & npm installed
+ Node.js & npm installed
 
--PM2 for process management
+ PM2 for process management
 
--Nginx for reverse proxy
+ Nginx for reverse proxy
 
--Domain name (optional) for configuring HTTPS
+ Domain name (optional) for configuring HTTPS
 
 # Step 1: Set Up EC2 Instance
 
