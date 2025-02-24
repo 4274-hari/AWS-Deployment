@@ -52,16 +52,16 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
 # Step 3: Install and Configure MongoDB
 
-  *Install MongoDB from the Official MongoDB Repository
+*Install MongoDB from the Official MongoDB Repository
 
-  1. If you have already added the mongodb-repo run this to remove it:
+ 1. If you have already added the mongodb-repo run this to remove it:
 
              sudo rm -f /etc/yum.repos.d/mongodb*.repo
 
-  (or)     
+   (or)     
   
 
-  1. If you are adding the MongoDB Repository for the first time 
+ 1. If you are adding the MongoDB Repository for the first time 
 
             cat <<EOF | sudo tee /etc/yum.repos.d/mongodb-org-7.0.repo
             [mongodb-org-7.0]
@@ -125,7 +125,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
      
          sudo cp -r build/* /var/www/html/
 
-  5. After build remove the swapfile 
+  4. After build remove the swapfile 
 
          sudo swapoff -a
 
