@@ -23,20 +23,20 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
 # Step 1: Set Up EC2 Instance
 
-  1.Launch an EC2 instance (Amazon Linux 2023 recommended).
+ 1. Launch an EC2 instance (Amazon Linux 2023 recommended).
 
-  2.Configure security groups to allow:
+ 2. Configure security groups to allow:
 
         SSH (port 22)
         HTTP (port 80)
         HTTPS (port 443)
         Custom port (e.g., 5000 for API) *custom port should be configure after running your backend in instance.
 
-  3.Enter into root user:
+ 3. Enter into root user:
 
         sudo su 
 
-  4.Update packages:
+ 4. Update packages:
 
         sudo dnf update -y
 
@@ -52,14 +52,14 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
 # Step 3: Install and Configure MongoDB
 
-*Install MongoDB from the Official MongoDB Repository
+Install MongoDB from the Official MongoDB Repository
 
  1. If you have already added the mongodb-repo run this to remove it:
 
              sudo rm -f /etc/yum.repos.d/mongodb*.repo
 
-   (or)     
-  
+     
+  (or)
 
  1. If you are adding the MongoDB Repository for the first time 
 
@@ -76,12 +76,12 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
             sudo dnf install -y mongodb-org
 
-  3.Enable and Start the MongoDB Service
+  3. Enable and Start the MongoDB Service
 
             sudo systemctl enable mongod
             sudo systemctl start mongod
  
-  4.Verify the Installation
+  4. Verify the Installation
 
             mongod --version
 
@@ -91,7 +91,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
     cd your-repo
     npm install
 
-  Start the backend with PM2:
+   Start the backend with PM2:
     
         pm2 start server.js
         pm2 save
@@ -99,7 +99,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
 # Step 5: Build and Deploy React Frontend
 
-  1.If you not have enough memory to build the app, you need to create a swapfile for memory based on your need.
+ 1. If you not have enough memory to build the app, you need to create a swapfile for memory based on your need.
 
         sudo fallocate -l 4G /swapfile  # Create a 4GB file
         sudo chmod 600 /swapfile        # Set correct permissions
@@ -111,13 +111,13 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
         swapon --show
         free -h
 
-  2.Navigate to the React app folder:
+ 2. Navigate to the React app folder:
 
         cd client
         npm install
         NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
-  3. Copy build files to the Nginx root directory:
+ 3. Copy build files to the Nginx root directory:
 
          sudo mkdir -p /var/www/html
 
@@ -125,7 +125,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
      
          sudo cp -r build/* /var/www/html/
 
-  4. After build remove the swapfile 
+ 4. After build remove the swapfile 
 
          sudo swapoff -a
 
@@ -134,17 +134,17 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
  (or)
 
-  1.If you have enough memory then Navigate to the React app folder:
+ 1. If you have enough memory then Navigate to the React app folder:
 
         cd client
         npm install
         npm run build
 
-  2. Copy build files to the Nginx root directory:
+ 2. Copy build files to the Nginx root directory:
 
          sudo cp -r build/* /var/www/html/
 
-  3. If you are using Backend as seperate file move the folder
+ 3. If you are using Backend as seperate file move the folder
 
          mv from_directory /var/www/
          cd /var/www/Backend
@@ -199,14 +199,14 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
 # Step 7: Configure AWS S3 for Static Assets
 
-  1.Create an S3 bucket in AWS.
+1. Create an S3 bucket in AWS.
 
-  2.Upload files via AWS CLI:
+2. Upload files via AWS CLI:
       
        aws s3 cp uploads s3://your-bucket-name/ --recursive
 
-  3.Get AWS Credentials:
-  Create an Access Key from AWS IAM:
+ 3. Get AWS Credentials:
+   Create an Access Key from AWS IAM:
             1.Go to AWS IAM Console → Users → Your User.
             2.Click Security Credentials → Create Access Key.
             3.Copy Access Key ID and Secret Access Key.
@@ -216,7 +216,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
             echo "AWS_ACCESS_KEY_ID:AWS_SECRET_ACCESS_KEY" > ~/.passwd-s3fs
             chmod 600 ~/.passwd-s3fs
 
-  4.Mount the S3 Bucket 
+4. Mount the S3 Bucket 
 
         git clone https://github.com/s3fs-fuse/s3fs-fuse.git
         cd s3fs-fuse
@@ -233,7 +233,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
             your-bucket-name /mnt/s3bucket fuse.s3fs _netdev,allow_other,use_cache=/tmp,passwd_file=~/.passwd-s3fs 0 0
             
-  5.Give permission 
+5. Give permission 
 
         sudo chmod -R 755 /mnt/s3bucket/uploads  # Read & execute for others, but only write for owner
         sudo chown -R nginx:nginx /mnt/s3bucket/uploads  # Give ownership to the Nginx server (if using Nginx)
