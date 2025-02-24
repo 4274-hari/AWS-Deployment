@@ -1,7 +1,7 @@
 # AWS-Deployment
 Deployment Guide: React Frontend & Node.js Backend on AWS EC2 with MongoDB & S3
 
-#Overview
+# Overview
 
 This guide outlines the steps to deploy a React frontend and a Node.js/Express backend on an AWS EC2 instance running Amazon Linux 2023. The backend connects to MongoDB and serves the frontend via Nginx, with an S3 bucket used for static assets.
 
@@ -52,8 +52,8 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
              sudo rm -f /etc/yum.repos.d/mongodb*.repo
 
-
-                                (or)
+  (or)     
+  
 
   1. If you are adding the MongoDB Repository for the first time 
 
@@ -85,7 +85,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
     cd your-repo
     npm install
 
-    Start the backend with PM2:
+  Start the backend with PM2:
     
         pm2 start server.js
         pm2 save
@@ -100,7 +100,7 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
         sudo mkswap /swapfile           # Format it as swap
         sudo swapon /swapfile           # Enable swap
 
-    Checking Swap Status
+  Checking Swap Status
 
         swapon --show
         free -h
@@ -113,20 +113,20 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
   3. Copy build files to the Nginx root directory:
 
-        sudo mkdir -p /var/www/html
+         sudo mkdir -p /var/www/html
 
-        mv from_build_path /var/www/html/
-                 (or)
-        sudo cp -r build/* /var/www/html/
+         mv from_build_path /var/www/html/ #(or)
+     
+         sudo cp -r build/* /var/www/html/
 
-  4. After build remove the swapfile 
+  5. After build remove the swapfile 
 
-        sudo swapoff -a
+         sudo swapoff -a
 
-        sudo rm -f /swapfile
+         sudo rm -f /swapfile
 
 
-                    (or)
+ (or)
 
   1.If you have enough memory then Navigate to the React app folder:
 
@@ -136,12 +136,12 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
   2. Copy build files to the Nginx root directory:
 
-        sudo cp -r build/* /var/www/html/
+         sudo cp -r build/* /var/www/html/
 
   3. If you are using Backend as seperate file move the folder
 
-        mv from_directory /var/www/
-        cd /var/www/Backend
+         mv from_directory /var/www/
+         cd /var/www/Backend
 
         Start the backend with PM2:
     
@@ -154,11 +154,11 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
   1. Install Nginx:
 
-        sudo dnf install nginx -y 
+         sudo dnf install nginx -y 
 
   2. Modify Nginx configuration:
 
-        sudo nano /etc/nginx/nginx.conf
+         sudo nano /etc/nginx/nginx.conf
 
         Replace contents with:
 
@@ -185,11 +185,11 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
                 allow all;
             }
 
-        }
+         }
 
   3. Restart Nginx:
 
-        sudo systemctl restart nginx
+         sudo systemctl restart nginx
 
 # Step 7: Configure AWS S3 for Static Assets
 
@@ -200,14 +200,12 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
        aws s3 cp uploads s3://your-bucket-name/ --recursive
 
   3.Get AWS Credentials:
-
-        Create an Access Key from AWS IAM:
-
+  Create an Access Key from AWS IAM:
             1.Go to AWS IAM Console → Users → Your User.
             2.Click Security Credentials → Create Access Key.
             3.Copy Access Key ID and Secret Access Key.
 
-        Now, store your credentials in a file:
+  Now, store your credentials in a file:
 
             echo "AWS_ACCESS_KEY_ID:AWS_SECRET_ACCESS_KEY" > ~/.passwd-s3fs
             chmod 600 ~/.passwd-s3fs
@@ -217,15 +215,15 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
         git clone https://github.com/s3fs-fuse/s3fs-fuse.git
         cd s3fs-fuse
 
-        Create a mount point for the S3 bucket:
+  Create a mount point for the S3 bucket:
 
             sudo mkdir -p /mnt/s3bucket
 
-        Mount the S3 bucket:
+  Mount the S3 bucket:
 
             s3fs your-bucket-name /mnt/s3bucket -o passwd_file=~/.passwd-s3fs -o allow_other
 
-        To make it persistent on reboot, add this line to /etc/fstab:
+  To make it persistent on reboot, add this line to /etc/fstab:
 
             your-bucket-name /mnt/s3bucket fuse.s3fs _netdev,allow_other,use_cache=/tmp,passwd_file=~/.passwd-s3fs 0 0
             
@@ -246,15 +244,15 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
   1. Check logs:
 
-        pm2 logs
+         pm2 logs
 
   2. Restart the backend:
 
-        pm2 restart backend-app
+         pm2 restart backend-app
 
   3. Check Nginx status:
 
-        sudo systemctl status nginx
+         sudo systemctl status nginx
 
 # Conclusion
  
