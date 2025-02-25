@@ -300,7 +300,9 @@ Install MongoDB from the Official MongoDB Repository
 3. Mount the S3 Bucket 
 
         git clone https://github.com/s3fs-fuse/s3fs-fuse.git
-        cd s3fs-fuse
+        yum install -y automake fuse fuse-devel gcc-c++ git libcurl-devel \
+        libxml2-devel make openssl-devel
+        
 
   Create a mount point for the S3 bucket:
 
