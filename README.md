@@ -200,11 +200,11 @@ Install MongoDB from the Official MongoDB Repository
 # Step 7: Create an IAM Role
    1.	Sign in to AWS Management Console
       
-   Go to the IAM (Identity and Access Management) service.
+        Go to the IAM (Identity and Access Management) service.
        
    2.	Navigate to Roles
       
-   In the IAM console, click on Roles on the left-hand menu.
+        In the IAM console, click on Roles on the left-hand menu.
    
    3.	Click "Create Role"
       
@@ -213,14 +213,16 @@ Install MongoDB from the Official MongoDB Repository
         Choose EC2 as the use case since you are attaching it to an EC2 instance.
      	
         Click Next.
-    4.	Attach Policies to the Role
+     	
+   4.	Attach Policies to the Role
      	
         Select the policies that define the permissions the role should have.
      	
         Example: If the role should allow S3 access, attach the AmazonS3FullAccess policy.
      	
         Click Next.
-    5.	Add Tags (Optional)
+     	
+   5.	Add Tags (Optional)
      	
         Add key-value tags if needed for better organization.
      	
@@ -239,17 +241,17 @@ Install MongoDB from the Official MongoDB Repository
      	
    2.	Select the Instance
       
-   In the Instances section, find and select the instance you want to attach the role to.
+        In the Instances section, find and select the instance you want to attach the role to.
    
    3.	Modify IAM Role
       
-   Click Actions → Security → Modify IAM Role.
+        Click Actions → Security → Modify IAM Role.
    
    4.	Attach the IAM Role
       
-   From the dropdown, select the IAM role you created (EC2-S3-Access-Role).
+        From the dropdown, select the IAM role you created (EC2-S3-Access-Role).
        
-   Click Update IAM Role.
+        Click Update IAM Role.
    
 
 
