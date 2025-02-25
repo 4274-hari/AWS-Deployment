@@ -207,9 +207,15 @@ Install MongoDB from the Official MongoDB Repository
 
  3. Get AWS Credentials:
    Create an Access Key from AWS IAM:
-            1.Go to AWS IAM Console → Users → Your User.
-            2.Click Security Credentials → Create Access Key.
-            3.Copy Access Key ID and Secret Access Key.
+
+
+     1.Go to AWS IAM Console → Users → Your User.
+    
+
+    2.Click Security Credentials → Create Access Key.
+    
+
+    3.Copy Access Key ID and Secret Access Key.
 
   Now, store your credentials in a file:
 
