@@ -272,15 +272,11 @@ Install MongoDB from the Official MongoDB Repository
 
 # Step 10: Configure AWS S3 for Static Assets
 
-1. Upload files via AWS CLI:
-      
-       aws s3 cp uploads s3://your-bucket-name/ --recursive
-   
-   list the s3 bucket:
+1. List the s3 bucket:
 
        aws s3 ls
 
- 3. Get AWS Credentials:
+ 2. Get AWS Credentials:
    Create an Access Key from AWS IAM:
 
 
@@ -299,15 +295,14 @@ Install MongoDB from the Official MongoDB Repository
 
 3. Mount the S3 Bucket 
       
-       cd /usr/local/src
-       sudo wget https://github.com/s3fs-fuse/s3fs-fuse/archive/refs/tags/v1.94.tar.gz
+       sudo yum install automake fuse fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel -y
 
-       sudo tar -xvzf v1.94.tar.gz
-       cd s3fs-fuse-1.94
+       git clone https://github.com/s3fs-fuse/s3fs-fuse.git
 
-       sudo ./autogen.sh
-       sudo ./configure
-       sudo make
+       cd s3fs-fuse
+       ./autogen.sh  
+       ./configure --prefix=/usr --with-openssl
+       make
        sudo make install
 
        s3fs --version
@@ -319,6 +314,8 @@ Install MongoDB from the Official MongoDB Repository
   Mount the S3 bucket:
 
             s3fs your-bucket-name /mnt/s3bucket -o passwd_file=~/.passwd-s3fs -o allow_other
+     (or)    
+            s3fs your-bucket-name /mnt/s3bucket -o passwd_file=${HOME}/.passwd-s3fs
 
   To make it persistent on reboot, add this line to /etc/fstab:
 
