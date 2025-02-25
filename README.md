@@ -322,7 +322,7 @@ Install MongoDB from the Official MongoDB Repository
 
   To make it persistent on reboot, add this line to /etc/fstab:
 
-            your-bucket-name /mnt/s3bucket fuse.s3fs _netdev,allow_other,use_cache=/tmp,passwd_file=~/.passwd-s3fs 0 0
+            s3fs vecstorage /mnt/s3bucket -o allow_other -o use_cache=/tmp -o passwd_file=~/.passwd-s3fs -o _netdev
             
 4. Give permission 
 
