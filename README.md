@@ -298,11 +298,19 @@ Install MongoDB from the Official MongoDB Repository
             chmod 600 ~/.passwd-s3fs
 
 3. Mount the S3 Bucket 
+      
+       cd /usr/local/src
+       sudo wget https://github.com/s3fs-fuse/s3fs-fuse/archive/refs/tags/v1.94.tar.gz
 
-        git clone https://github.com/s3fs-fuse/s3fs-fuse.git
-        yum install -y automake fuse fuse-devel gcc-c++ git libcurl-devel \
-        libxml2-devel make openssl-devel
-        
+       sudo tar -xvzf v1.94.tar.gz
+       cd s3fs-fuse-1.94
+
+       sudo ./autogen.sh
+       sudo ./configure
+       sudo make
+       sudo make install
+
+       s3fs --version
 
   Create a mount point for the S3 bucket:
 
