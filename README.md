@@ -197,7 +197,7 @@ Install MongoDB from the Official MongoDB Repository
 
          sudo systemctl restart nginx
 
-# step 7: Using AWS Management Console
+# Step 7: Using AWS Management Console
 
    Go to AWS S3 Console.
    
