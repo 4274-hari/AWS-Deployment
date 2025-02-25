@@ -197,7 +197,22 @@ Install MongoDB from the Official MongoDB Repository
 
          sudo systemctl restart nginx
 
-# Step 7: Create an IAM Role
+# step 7: Using AWS Management Console
+
+   Go to AWS S3 Console.
+   
+   Click "Create bucket".
+   
+   Enter a unique bucket name.
+   
+   Select a region (e.g., us-east-1).
+   
+   Configure public access settings (private by default).
+   
+   Click "Create bucket".
+
+
+# Step 8: Create an IAM Role
    1.	Sign in to AWS Management Console
       
         Go to the IAM (Identity and Access Management) service.
@@ -232,7 +247,7 @@ Install MongoDB from the Official MongoDB Repository
      	
         Review the configurations and click Create Role.
 
-# Step 8: Attach the IAM Role to an EC2 Instance
+# Step 9: Attach the IAM Role to an EC2 Instance
 
      
    1.	Go to the EC2 Console
@@ -255,15 +270,13 @@ Install MongoDB from the Official MongoDB Repository
    
 
 
-# Step 9: Configure AWS S3 for Static Assets
+# Step 10: Configure AWS S3 for Static Assets
 
-1. Create an S3 bucket in AWS.
-
-2. Upload files via AWS CLI:
+1. Upload files via AWS CLI:
       
        aws s3 cp uploads s3://your-bucket-name/ --recursive
 
- 3. Get AWS Credentials:
+ 2. Get AWS Credentials:
    Create an Access Key from AWS IAM:
 
 
@@ -280,7 +293,7 @@ Install MongoDB from the Official MongoDB Repository
             echo "AWS_ACCESS_KEY_ID:AWS_SECRET_ACCESS_KEY" > ~/.passwd-s3fs
             chmod 600 ~/.passwd-s3fs
 
-4. Mount the S3 Bucket 
+3. Mount the S3 Bucket 
 
         git clone https://github.com/s3fs-fuse/s3fs-fuse.git
         cd s3fs-fuse
@@ -297,20 +310,20 @@ Install MongoDB from the Official MongoDB Repository
 
             your-bucket-name /mnt/s3bucket fuse.s3fs _netdev,allow_other,use_cache=/tmp,passwd_file=~/.passwd-s3fs 0 0
             
-5. Give permission 
+4. Give permission 
 
         sudo chmod -R 755 /mnt/s3bucket/uploads  # Read & execute for others, but only write for owner
         sudo chown -R nginx:nginx /mnt/s3bucket/uploads  # Give ownership to the Nginx server (if using Nginx)
 
 
-# Step 10: Enable SSL (Optional)
+# Step 11: Enable SSL (Optional)
 
   Use Certbot to enable HTTPS:
 
        sudo dnf install certbot python3-certbot-nginx -y
        sudo certbot --nginx -d your-domain.com
 
-# Step 11: Monitoring and Maintenance
+# Step 12: Monitoring and Maintenance
 
   1. Check logs:
 
