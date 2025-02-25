@@ -197,7 +197,63 @@ Install MongoDB from the Official MongoDB Repository
 
          sudo systemctl restart nginx
 
-# Step 7: Configure AWS S3 for Static Assets
+# Step 7: Create an IAM Role
+   1.	Sign in to AWS Management Console
+      
+   Go to the IAM (Identity and Access Management) service.
+       
+   2.	Navigate to Roles
+      
+   In the IAM console, click on Roles on the left-hand menu.
+   
+   3.	Click "Create Role"
+      
+        Select AWS service as the trusted entity.
+     	
+        Choose EC2 as the use case since you are attaching it to an EC2 instance.
+     	
+        Click Next.
+    4.	Attach Policies to the Role
+     	
+        Select the policies that define the permissions the role should have.
+     	
+        Example: If the role should allow S3 access, attach the AmazonS3FullAccess policy.
+     	
+        Click Next.
+    5.	Add Tags (Optional)
+     	
+        Add key-value tags if needed for better organization.
+     	
+   6.	Review and Create the Role
+    
+        Provide a meaningful name for the role (e.g., EC2-S3-Access-Role).
+     	
+        Review the configurations and click Create Role.
+
+# Step 8: Attach the IAM Role to an EC2 Instance
+
+     
+   1.	Go to the EC2 Console
+      
+        Open the EC2 Dashboard.
+     	
+   2.	Select the Instance
+      
+   In the Instances section, find and select the instance you want to attach the role to.
+   
+   3.	Modify IAM Role
+      
+   Click Actions → Security → Modify IAM Role.
+   
+   4.	Attach the IAM Role
+      
+   From the dropdown, select the IAM role you created (EC2-S3-Access-Role).
+       
+   Click Update IAM Role.
+   
+
+
+# Step 9: Configure AWS S3 for Static Assets
 
 1. Create an S3 bucket in AWS.
 
@@ -245,14 +301,14 @@ Install MongoDB from the Official MongoDB Repository
         sudo chown -R nginx:nginx /mnt/s3bucket/uploads  # Give ownership to the Nginx server (if using Nginx)
 
 
-# Step 8: Enable SSL (Optional)
+# Step 10: Enable SSL (Optional)
 
   Use Certbot to enable HTTPS:
 
        sudo dnf install certbot python3-certbot-nginx -y
        sudo certbot --nginx -d your-domain.com
 
-# Step 9: Monitoring and Maintenance
+# Step 11: Monitoring and Maintenance
 
   1. Check logs:
 
