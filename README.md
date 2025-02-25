@@ -275,8 +275,12 @@ Install MongoDB from the Official MongoDB Repository
 1. Upload files via AWS CLI:
       
        aws s3 cp uploads s3://your-bucket-name/ --recursive
+   
+   list the s3 bucket:
 
- 2. Get AWS Credentials:
+       aws s3 ls
+
+ 3. Get AWS Credentials:
    Create an Access Key from AWS IAM:
 
 
