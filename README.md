@@ -272,6 +272,15 @@ Install MongoDB from the Official MongoDB Repository
 
 # Step 10: Configure AWS S3 for Static Assets
 
+If you not have awscli or it hitting error:
+
+       sudo yum remove awscli -y
+       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+       unzip awscliv2.zip
+       sudo ./aws/install
+       aws --version
+
+
 Change the path for aws:
 
        export PATH=/usr/local/bin:$PATH
