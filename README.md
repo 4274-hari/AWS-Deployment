@@ -173,7 +173,7 @@ Install MongoDB from the Official MongoDB Repository
                  server_name your-domain.com;
              location / {
                  root /var/www/html;
-                 index index.html index.htm;
+                 index index.html ;
                  try_files $uri /index.html;
               }
 
