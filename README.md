@@ -272,6 +272,11 @@ Install MongoDB from the Official MongoDB Repository
 
 # Step 10: Configure AWS S3 for Static Assets
 
+Change the path for aws:
+
+       export PATH=/usr/local/bin:$PATH
+
+
 1. List the s3 bucket:
 
        aws s3 ls
