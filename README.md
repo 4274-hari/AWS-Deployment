@@ -340,6 +340,12 @@ Change the path for aws:
         sudo chmod -R 755 /mnt/s3bucket/uploads  # Read & execute for others, but only write for owner
         sudo chown -R nginx:nginx /mnt/s3bucket/uploads  # Give ownership to the Nginx server (if using Nginx)
 
+You can run the following commands with the -v (verbose) flag to see the progress of each operation:
+
+         sudo chmod -Rv 755 /mount/vec/build
+         sudo chown -Rv nginx:nginx /mount/vec/build
+
+
 
 # Step 11: Enable SSL (Optional)
 
