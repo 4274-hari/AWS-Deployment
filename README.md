@@ -334,8 +334,19 @@ Change the path for aws:
   To make it persistent on reboot, add this line to /etc/fstab:
 
             s3fs vecstorage /mnt/s3bucket -o allow_other -o use_cache=/tmp -o passwd_file=~/.passwd-s3fs -o _netdev
-            
-4. Give permission 
+
+4.  Make Files Public (Not Recommended for Sensitive Data)
+    * Go to the AWS S3 Console.
+    * Open your S3 bucket.
+    * Navigate to the file you want to make public.
+    * Click Permissions and then Edit.
+    * Enable public read access by setting the ACL:
+    * Grant "Everyone (public access)" READ permission.
+    * Save the changes.
+
+    (or)
+    
+4. Give permission for the reqiuired file to access  
 
         sudo chmod -R 755 /mnt/s3bucket/uploads  # Read & execute for others, but only write for owner
         sudo chown -R nginx:nginx /mnt/s3bucket/uploads  # Give ownership to the Nginx server (if using Nginx)
