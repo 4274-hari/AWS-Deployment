@@ -27,10 +27,10 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
 
  2. Configure security groups to allow:
 
-        SSH (port 22)
-        HTTP (port 80)
-        HTTPS (port 443)
-        Custom port (e.g., 5000 for API) *custom port should be configure after running your backend in instance.
+     SSH (port 22)
+     HTTP (port 80)
+     HTTPS (port 443)
+     Custom port (e.g., 5000 for API) *custom port should be configure after running your backend in instance.
 
  3. Enter into root user:
 
@@ -57,8 +57,7 @@ Install MongoDB from the Official MongoDB Repository
  1. If you have already added the mongodb-repo run this to remove it:
 
              sudo rm -f /etc/yum.repos.d/mongodb*.repo
-
-     
+       
   (or)
 
  1. If you are adding the MongoDB Repository for the first time 
@@ -91,12 +90,6 @@ Install MongoDB from the Official MongoDB Repository
     cd your-repo
     npm install
 
-   Start the backend with PM2:
-    
-        pm2 start server.js
-        pm2 save
-        pm2 startup
-
 # Step 5: Build and Deploy React Frontend
 
  1. If you not have enough memory to build the app, you need to create a swapfile for memory based on your need.
@@ -121,15 +114,23 @@ Install MongoDB from the Official MongoDB Repository
 
          sudo mkdir -p /var/www/html
 
-         mv from_build_path /var/www/html/ #(or)
+         mv from_build_path /var/www/html/
+
+    (or)
      
          sudo cp -r build/* /var/www/html/
 
  4. After build remove the swapfile 
 
          sudo swapoff -a
-
          sudo rm -f /swapfile
+
+
+5. Start the backend with PM2:
+    
+        pm2 start server.js
+        pm2 save
+        pm2 startup
 
 
  (or)
@@ -149,7 +150,7 @@ Install MongoDB from the Official MongoDB Repository
          mv from_directory /var/www/
          cd /var/www/Backend
 
-        Start the backend with PM2:
+ 4. Start the backend with PM2:
     
             pm2 start server.js
             pm2 save
@@ -172,7 +173,7 @@ Install MongoDB from the Official MongoDB Repository
                  listen 80;
                  server_name your-domain.com;
              location / {
-                 root /var/www/html;
+                 root /var/www/html/build;
                  index index.html ;
                  try_files $uri /index.html;
               }
@@ -185,12 +186,6 @@ Install MongoDB from the Official MongoDB Repository
                 proxy_set_header Host $host;
                 proxy_cache_bypass $http_upgrade;
              }
-             location /uploads/ {
-                alias /mnt/s3bucket/uploads/;
-                autoindex on;
-                allow all;
-            }
-
          }
 
   3. Restart Nginx:
@@ -213,6 +208,7 @@ Install MongoDB from the Official MongoDB Repository
 
 
 # Step 8: Create an IAM Role
+
    1.	Sign in to AWS Management Console
       
         Go to the IAM (Identity and Access Management) service.
@@ -291,16 +287,17 @@ Change the path for aws:
        aws s3 ls
 
  2. Get AWS Credentials:
+    
    Create an Access Key from AWS IAM:
 
 
-     1.Go to AWS IAM Console → Users → Your User.
+   * Go to AWS IAM Console → Users → Your User.
     
 
-    2.Click Security Credentials → Create Access Key.
+   * Click Security Credentials → Create Access Key.
     
 
-    3.Copy Access Key ID and Secret Access Key.
+   * Copy Access Key ID and Secret Access Key.
 
   Now, store your credentials in a file:
 
@@ -310,15 +307,12 @@ Change the path for aws:
 3. Mount the S3 Bucket 
       
        sudo yum install automake fuse fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel -y
-
        git clone https://github.com/s3fs-fuse/s3fs-fuse.git
-
        cd s3fs-fuse
        ./autogen.sh  
        ./configure --prefix=/usr --with-openssl
        make
        sudo make install
-
        s3fs --version
 
   Create a mount point for the S3 bucket:
@@ -336,12 +330,19 @@ Change the path for aws:
             s3fs vecstorage /mnt/s3bucket -o allow_other -o use_cache=/tmp -o passwd_file=~/.passwd-s3fs -o _netdev
 
 4.  Make Files Public (Not Recommended for Sensitive Data)
+   
     * Go to the AWS S3 Console.
+  
     * Open your S3 bucket.
+      
     * Navigate to the file you want to make public.
+      
     * Click Permissions and then Edit.
-    * Enable public read access by setting the ACL:
+      
+    * Enable public read access by setting the ACL.
+      
     * Grant "Everyone (public access)" READ permission.
+      
     * Save the changes.
 
     (or)
@@ -356,14 +357,84 @@ You can run the following commands with the -v (verbose) flag to see the progres
          sudo chmod -Rv 755 /mount/vec/build
          sudo chown -Rv nginx:nginx /mount/vec/build
 
+ 5. Modify Nginx configuration:
+
+         sudo nano /etc/nginx/nginx.conf
+
+    Replace contents with:
+
+           server {
+                 listen 80;
+                 server_name your-domain.com;
+             location / {
+                 root /var/www/html;
+                 index index.html ;
+                 try_files $uri /index.html;
+              }
+
+             location /api/ {
+                proxy_pass http://localhost:5000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+             }
+             location /data/ {
+                alias your-mount-path;
+                autoindex on;
+                allow all;
+            }
+
+         }
+
 
 
 # Step 11: Enable SSL (Optional)
 
-  Use Certbot to enable HTTPS:
+  1. Use Certbot to enable HTTPS:
 
-       sudo dnf install certbot python3-certbot-nginx -y
-       sudo certbot --nginx -d your-domain.com
+         sudo dnf install certbot python3-certbot-nginx -y
+         sudo certbot --nginx -d your-domain.com
+
+  2. Modify Nginx configuration:
+
+         sudo nano /etc/nginx/nginx.conf
+
+     Replace contents with:
+
+         server {
+           listen       80;
+           server_name  your-domain-main;
+           return 301 https://$host$request_uri;
+               }
+         server {
+           listen 443 ssl;
+           server_name your-domain-name;
+           ssl_certificate /etc/letsencrypt/live/your-domain-name/fullchain.pem;
+           ssl_certificate_key /etc/letsencrypt/live/your-domain-name/privkey.pem;
+           ssl_protocols TLSv1.2 TLSv1.3;
+           ssl_ciphers HIGH:!aNULL:!MD5;
+
+         location / {
+           root /var/www/html/build;
+           index index.html;
+           try_files $uri /index.html;
+             }
+         location /api/ {
+            proxy_pass http://localhost:5000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+            }
+         location /data/ {
+            alias your-mount-path;
+            autoindex on;
+            add_header Access-Control-Allow-Origin *;
+            }
+         }
 
 # Step 12: Monitoring and Maintenance
 
