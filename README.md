@@ -28,15 +28,18 @@ This guide outlines the steps to deploy a React frontend and a Node.js/Express b
  2. Configure security groups to allow:
 
      SSH (port 22)
+    
      HTTP (port 80)
+
      HTTPS (port 443)
+
      Custom port (e.g., 5000 for API) *custom port should be configure after running your backend in instance.
 
- 3. Enter into root user:
+ 4. Enter into root user:
 
         sudo su 
 
- 4. Update packages:
+ 5. Update packages:
 
         sudo dnf update -y
 
