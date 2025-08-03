@@ -1,6 +1,8 @@
 # AWS-Deployment
 Deployment Guide: React Frontend & Node.js Backend on AWS EC2 with MongoDB & S3
 
+
+
 # Overview
 
 This guide outlines the steps to deploy a React frontend and a Node.js/Express backend on an AWS EC2 instance running Amazon Linux 2023. The backend connects to MongoDB and serves the frontend via Nginx, with an S3 bucket used for static assets.
